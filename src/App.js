@@ -12,6 +12,7 @@ import ChangePassword from './components/ChangePassword/ChangePassword'
 import Favorites from './components/Stops/Favorites'
 import FavesCreate from './components/Stops/FavoritesCreate'
 import Favorite from './components/Stops/Favorite'
+import FavesEdit from './components/Stops/FavesEdit'
 
 class App extends Component {
   constructor () {
@@ -53,6 +54,10 @@ class App extends Component {
           <AuthenticatedRoute user={user} path='/create-Favorite' render={() => (
             <FavesCreate alert={this.alert} user={user} />
           )} />
+          <AuthenticatedRoute exact user={user} path='/favorites/:id/edit' render={({ match }) => (
+            <FavesEdit alert={this.alert} user={user} match={match} />
+          )} />
+
           <Route path='/sign-up' render={() => (
             <SignUp alert={this.alert} setUser={this.setUser} />
           )} />
