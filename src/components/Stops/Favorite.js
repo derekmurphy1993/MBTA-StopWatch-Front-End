@@ -73,14 +73,13 @@ class Favorite extends Component {
         <h5>{this.state.favorite.station.url_path}</h5>
         <hr/>
         <div>
-          {this.props.user && (this.props.user._id === this.state.favorite.owner._id) &&
             (
-              <React.Fragment>
-                <Link className="btn btn-primary mr-2" to={`/favorites/${this.props.match.params.id}/edit`}>Edit</Link>
-                <button className="btn btn-danger mr-2" onClick={this.handleDelete}>Delete</button>
-              </React.Fragment>
+          <React.Fragment>
+            <Link className="btn btn-primary mr-2" to={`/favorites/${this.props.match.params.id}/edit`}>Edit</Link>
+            <button className="btn btn-danger mr-2" onClick={this.handleDelete}>Delete</button>
+          </React.Fragment>
             )
-          }
+
           <Link className="btn btn-secondary" to="/">Back</Link>
         </div>
       </div>

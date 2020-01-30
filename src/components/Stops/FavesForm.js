@@ -7,7 +7,7 @@ const FavesForm = ({ favorite, handleChange, handleSubmit }) => (
     <form onSubmit={handleSubmit}>
       <input
         className="form-control mb-2"
-        placeholder="Description: ex. Home, Work, Library..."
+        placeholder="ex. Home, Work, Library..."
         type="text"
         value={favorite.description}
         onChange={handleChange}
