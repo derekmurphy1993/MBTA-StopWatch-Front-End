@@ -69,8 +69,8 @@ class Favorite extends Component {
     return (
       <div className="col-sm-10 col-md-8 mx-auto mt-5">
         <h2>{this.state.favorite.description}</h2>
-        <h5>{this.state.favorite.station.url}</h5>
-        <h5>{this.state.favorite.station.url}</h5>
+        <h5>{this.state.favorite.station.name}</h5>
+        <h5>{this.state.favorite.station.url_path}</h5>
         <hr/>
         <div>
           {this.props.user && (this.props.user._id === this.state.favorite.owner._id) &&
