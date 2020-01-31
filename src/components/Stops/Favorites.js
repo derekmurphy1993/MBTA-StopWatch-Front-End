@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import apiUrl from '../../apiConfig'
+
 // import { Link } from 'react-router-dom'
 // When you use the ListGroup with the action prop
 // You can skip the Link component from react-router
@@ -43,7 +45,7 @@ class Favorites extends Component {
 
   getFaves = () => {
     axios({
-      url: 'http://localhost:4741/favorites',
+      url: `${apiUrl}/favorites/`,
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${this.props.user.token}`
