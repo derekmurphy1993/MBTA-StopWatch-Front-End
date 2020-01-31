@@ -6,6 +6,7 @@ import AutoDismissAlert from './components/AutoDismissAlert/AutoDismissAlert'
 import Header from './components/Header/Header'
 import SignUp from './components/SignUp/SignUp'
 import SignIn from './components/SignIn/SignIn'
+
 import SignOut from './components/SignOut/SignOut'
 import ChangePassword from './components/ChangePassword/ChangePassword'
 
@@ -13,6 +14,27 @@ import Favorites from './components/Stops/Favorites'
 import FavesCreate from './components/Stops/FavoritesCreate'
 import Favorite from './components/Stops/Favorite'
 import FavesEdit from './components/Stops/FavesEdit'
+// autoload favorites on log in
+
+// const loggedInBody = ({ user }) => (
+//   <Fragment>
+//     <AuthenticatedRoute user={user} exact path="/favorites" render={() => (
+//       <Favorites alert={this.alert} user={user} />
+//     )} />
+//   </Fragment>
+// )
+//
+// const loggedOutBody = (
+//   <Fragment>
+//     { 'Welcome! Create an account to begin!' }
+//   </Fragment>
+// )
+//
+// const Welcome = ({ user }) => (
+//   <Fragment>
+//     { user ? loggedInBody : loggedOutBody }
+//   </Fragment>
+// )
 
 class App extends Component {
   constructor () {
@@ -47,10 +69,15 @@ class App extends Component {
           />
         ))}
         <main className="container">
-          <Route exact path='/favorites/:id' render={(props) => (
+
+          <AuthenticatedRoute user={user} exact path='/favorites/:id' render={(props) => (
             <Favorite user={user} match={props.match} history={props.history} alert={this.alert} />
           )} />
-          <Route exact path="/favorites" component={Favorites}/>
+
+          <AuthenticatedRoute user={user} exact path="/favorites" render={() => (
+            <Favorites alert={this.alert} user={user} />
+          )} />
+
           <AuthenticatedRoute user={user} path='/create-Favorite' render={() => (
             <FavesCreate alert={this.alert} user={user} />
           )} />
@@ -72,6 +99,7 @@ class App extends Component {
           )} />
         </main>
       </Fragment>
+
     )
   }
 }

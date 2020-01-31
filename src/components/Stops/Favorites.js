@@ -24,27 +24,30 @@ class Favorites extends Component {
     // property from the location object.  For clarity,
     // (so we don't confuse it with the component's state)
     // we're renaming it to locationState when we destructure.
-    const { state: locationState } = this.props.location
-
-    // Now we check if the locationState is undefined
-    // and if it isn't, check if it has a deleted property.
-    if (locationState && locationState.deleted) {
-      // Use the book id passed in the deleted property
-      // to find out of there's actually a book to remove
-      // from state so that we don't fall into an infinite loop.
-      const favesToRemove = this.state.favorites.find(favorite => favorite.id === locationState.deleted)
-      if (favesToRemove) {
-        // Only run getBooks if the state still contains
-        // a deleted book.
-        this.getFaves()
-      }
-    }
+    // const { state: locationState } = this.props.location
+    //
+    // // Now we check if the locationState is undefined
+    // // and if it isn't, check if it has a deleted property.
+    // if (locationState && locationState.deleted) {
+    //   // Use the book id passed in the deleted property
+    //   // to find out of there's actually a book to remove
+    //   // from state so that we don't fall into an infinite loop.
+    //   const favesToRemove = this.state.favorites.find(favorite => favorite.id === locationState.deleted)
+    //   if (favesToRemove) {
+    //     // Only run getBooks if the state still contains
+    //     // a deleted book.
+    //     this.getFaves()
+    //   }
+    // }
   }
 
   getFaves = () => {
     axios({
       url: 'http://localhost:4741/favorites',
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.props.user.token}`
+      }
     })
       .then(response => {
         this.setState({ favorites: response.data.favorites.reverse() })
@@ -54,11 +57,7 @@ class Favorites extends Component {
 
   render () {
     let favesJsx = ''
-    // If the books array length is 0 (falsy)
-    // then ! (not) falsy is (truthy) so display
-    // a Loading message.  This is a good place for a
-    // spinner. Check out these from react-bootstrap:
-    // https://react-bootstrap.github.io/components/spinners/
+
     if (!this.state.favorites.length) {
       favesJsx = <p>Loading...</p>
     } else {
@@ -81,7 +80,7 @@ class Favorites extends Component {
     // substitute a ul element for the ListGroup below:
     return (
       <div className="col-sm-10 col-md-8 mx-auto mt-5">
-        <h2>Favorites</h2>
+        <h2>My Stops</h2>
         <ListGroup>
           {favesJsx}
         </ListGroup>
