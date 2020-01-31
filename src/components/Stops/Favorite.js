@@ -15,7 +15,10 @@ class Favorite extends Component {
   componentDidMount () {
     axios({
       url: `${apiUrl}/favorites/${this.props.match.params.id}`,
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.props.user.token}`
+      }
     })
       .then(res => {
         this.setState({ favorite: res.data.favorite })
