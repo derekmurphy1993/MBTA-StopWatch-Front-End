@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import apiUrl from '../../apiConfig'
-
 // import { Link } from 'react-router-dom'
 // When you use the ListGroup with the action prop
 // You can skip the Link component from react-router
