@@ -56,6 +56,20 @@ class Favorites extends Component {
       .catch(console.error)
   }
 
+  getPredictions = () => {
+    axios({
+      url: `${apiUrl}/predictions/`,
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.props.user.token}`
+      }
+    })
+      .then(response => {
+        this.setState({ predictions: response.data })
+      })
+      .catch(console.error)
+  }
+
   render () {
     let favesJsx = ''
 
@@ -69,9 +83,9 @@ class Favorites extends Component {
           href={`#/favorites/${favorite.id}`}
           className="d-flex justify-content-between"
         >
-          <span>{favorite.description}</span>
-          <span>{favorite.station.name}</span>
-          <span>{favorite.station.url_path}</span>
+          <span>{this.state.predictions.description}</span>
+          <span>{this.state.predictions.name}</span>
+          <span>{this.state.predictions.url_path}</span>
         </ListGroup.Item>
 
       ))

@@ -10,11 +10,10 @@ import SignIn from './components/SignIn/SignIn'
 import SignOut from './components/SignOut/SignOut'
 import ChangePassword from './components/ChangePassword/ChangePassword'
 
-// import Favorites from './components/Stops/Favorites'
+import Favorites from './components/Stops/Favorites'
 import FavesCreate from './components/Stops/FavoritesCreate'
 import Favorite from './components/Stops/Favorite'
 import FavesEdit from './components/Stops/FavesEdit'
-import Test from './components/Test/test'
 // autoload favorites on log in
 
 // const loggedInBody = ({ user }) => (
@@ -74,12 +73,13 @@ class App extends Component {
           />
         ))}
         <main className="container">
+          <h2> Welcome! </h2>
           <AuthenticatedRoute user={user} exact path='/favorites/:id' render={(props) => (
             <Favorite user={user} match={props.match} history={props.history} alert={this.alert} />
           )} />
 
           <AuthenticatedRoute user={user} exact path="/favorites" render={() => (
-            <Test />
+            <Favorites alert={this.alert} user={user}/>
           )} />
 
           <AuthenticatedRoute user={user} path='/create-Favorite' render={() => (

@@ -13,12 +13,11 @@ class Test extends Component {
   }
 
   componentDidMount () {
-    this.getTests()
+    this.getTest()
   }
 
   componentDidUpdate () {
   }
-
   getTest = () => {
     axios({
       url: `${mbtaUrl}/predictions?filter[stop]=place-davis&sort=arrival_time&page[limit]=2`,
@@ -26,7 +25,11 @@ class Test extends Component {
       // possibley need header for API key for multiple calls
     })
       .then(response => {
-        this.setState({ data: response })
+        const predictions = response.response.data
+        this.setState(predictions.map(p => (
+          p.attributes.departure_time
+        ))
+        )
         // what am I putting here?!?
       })
       .catch(console.error)
@@ -38,14 +41,14 @@ class Test extends Component {
     if (!this.state.data) {
       testJsx = <p>Loading...</p>
     } else {
-      testJsx = this.state.data.map((train) => (
+      testJsx = this.state.data((train) => (
         <ListGroup.Item
           key={train.id}
           action
-          href={`#/favorites/${train.id}`}
+          href={`#/favorites/${train.relationships.stop.data.id}`}
           className="d-flex justify-content-between"
         >
-          <span>{train.attributes.departure_time}</span>
+          <h1>{train.response.request.response.data.attributes.departure_time}</h1>
         </ListGroup.Item>)
       )
     }
