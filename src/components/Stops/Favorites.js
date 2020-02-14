@@ -61,7 +61,7 @@ class Favorites extends Component {
     let favesJsx = ''
 
     if (!this.state.favorites.length) {
-      favesJsx = <p>Loading...</p>
+      favesJsx = <p>Please create a new stop.</p>
     } else {
       favesJsx = this.state.favorites.map(favorite => (
         <ListGroup.Item
