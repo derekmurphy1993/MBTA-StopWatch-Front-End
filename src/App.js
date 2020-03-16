@@ -13,8 +13,8 @@ import ChangePassword from './components/ChangePassword/ChangePassword'
 // import Favorites from './components/Stops/Favorites'
 import FavesCreate from './components/Stops/FavoritesCreate'
 import Favorite from './components/Stops/Favorite'
+import Favorites from './components/Stops/Favorites'
 import FavesEdit from './components/Stops/FavesEdit'
-import Test from './components/Test/test'
 // autoload favorites on log in
 
 // const loggedInBody = ({ user }) => (
@@ -78,8 +78,12 @@ class App extends Component {
             <Favorite user={user} match={props.match} history={props.history} alert={this.alert} />
           )} />
 
-          <AuthenticatedRoute user={user} exact path="/favorites" render={() => (
-            <Test />
+          <AuthenticatedRoute user={user} path="/favorites" render={(props) => (
+            <Favorites user={user} match={props.match} history={props.history} alert={this.alert} />
+          )} />
+
+          <AuthenticatedRoute user={user} path="/predictions" render={() => (
+            <Favorites user={user} alert={this.alert} />
           )} />
 
           <AuthenticatedRoute user={user} path='/create-Favorite' render={() => (

@@ -13,6 +13,7 @@ const FavesForm = ({ favorite, handleChange, handleSubmit }) => (
         onChange={handleChange}
         name="description"
       />
+      {/* we need a dropdown of avalible stops to link in the favorite */}
       <input
         className="form-control mb-2"
         placeholder="ex. St. Mary's street, Kenmore, Alewife"
