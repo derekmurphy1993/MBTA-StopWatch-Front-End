@@ -1,24 +1,98 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import apiUrl from '../../apiConfig'
+// import { ensureDir } from 'fs-extra'
 // import { Link } from 'react-router-dom'
 // When you use the ListGroup with the action prop
 // You can skip the Link component from react-router
-import ListGroup from 'react-bootstrap/ListGroup'
-
 class Favorites extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      favorites: []
+      stillLoading: true,
+      favorites: [],
+      stations: [],
+      predictions: []
     }
   }
 
-  componentDidMount () {
-    this.getFaves()
+  setStateAsync (state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve)
+    });
+}
+
+  getDependencies = async () => {
+    const { jsonStations } = await axios({
+      // this needs to be, like, "currently active in dropdown", whcih ill assume is first
+      url: 'http://localhost:4741/stations', // not sure, we'll find out...
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.props.user.token}`
+      }
+    })
+    await this.setStateAsync({ stations: jsonStations.stations.done() })
+    const { jsonFavorites } = await axios({
+      url: 'http://localhost:4741/favorites/',
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.props.user.token}`
+      }
+    })
+    await this.setStateAsync({ favorites: jsonFavorites.favorites }).done()
+    const { jsonPredictions } = await axios({
+      // this needs to be, like, "currently active in dropdown", whcih ill assume is first
+      url: `http://localhost:4741/favorites/predictions/${this.state.favorites[0]}`, // not sure, we'll find out...
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.props.user.token}`
+      }
+    })
+    await this.setStateAsync({ stillLoading: false, predictions: jsonPredictions }).done()
   }
 
-  componentDidUpdate () {
+  // // ultimately, this should occur onChange for the dropdown -
+  // // doesn't really make sense that they load at init
+  // getPredictions = async () => {
+  //   const { data } = await axios({
+  //     // this needs to be, like, "currently active in dropdown", whcih ill assume is first
+  //     url: `http://localhost:4741/favorites/predictions/${this.state.favorites[0]}`, // not sure, we'll find out...
+  //     method: 'GET',
+  //     headers: {
+  //       'Authorization': `Bearer ${this.props.user.token}`
+  //     }
+  //   })
+  //   this.setState({ predictions: data.predictions })
+  // }
+
+  // getStations = async () => {
+  //   const { data } = await axios({
+  //     url: 'http://localhost:4741/stations/', // not sure, we'll find out...
+  //     method: 'GET',
+  //     headers: {
+  //       'Authorization': `Bearer ${this.props.user.token}`
+  //     }
+  //   })
+  //   this.setState({ stations: data.stations })
+  // }
+
+  async componentDidMount () {
+    await this.getDependencies()
+    // Promise.all([this.getFaves(), this.getStations()])
+    //   .then(([favorites, stations]) => {
+    //     await this.setState({
+    //       favorites: favorites,
+    //       stations: stations
+    //     })
+    //   }).all([false, this.getPredictions()])
+    //   .then((stillLoading, predictions) => {
+    //     this.setState({
+    //       stillLoading: stillLoading,
+    //       predictions: predictions
+    //     })
+    //   })
+  }
+
+  async componentDidUpdate () {
     // We can check if the component from the previous
     // route sent us some data using the location prop.
     // For convenience, we're destructing the state
@@ -42,49 +116,32 @@ class Favorites extends Component {
     // }
   }
 
-  getFaves = () => {
-    axios({
-      url: `${apiUrl}/favorites/`,
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${this.props.user.token}`
-      }
+  async injectFavoriteStationsDropdown () {
+      // i dont think we need index but easier to take off than put on
+    if (!this.state.stillLoading) {
+      return null
+    }
+    console.log(this.state)
+    const favoriteStationsDropdown = await this.state.favorites.map((fav, i) => {
+      return (
+        <option key={i} value={fav.id}>{fav.name}</option>
+      )
     })
-      .then(response => {
-        this.setState({ favorites: response.data.favorites.reverse() })
-      })
-      .catch(console.error)
+    return (
+      <select value={this.state.value}>
+        {await favoriteStationsDropdown}
+      </select>
+    )
   }
 
   render () {
-    let favesJsx = ''
-
-    if (!this.state.favorites.length) {
-      favesJsx = <p>Loading...</p>
-    } else {
-      favesJsx = this.state.favorites.map(favorite => (
-        <ListGroup.Item
-          key={favorite.id}
-          action
-          href={`#/favorites/${favorite.id}`}
-          className="d-flex justify-content-between"
-        >
-          <span>{favorite.description}</span>
-          <span>{favorite.station.name}</span>
-          <span>{favorite.station.url_path}</span>
-        </ListGroup.Item>
-
-      ))
+    if (this.state.stillLoading) {
+      return null
     }
-
-    // If you used just an li element above be sure to
-    // substitute a ul element for the ListGroup below:
     return (
       <div className="col-sm-10 col-md-8 mx-auto mt-5">
         <h2>My Stops</h2>
-        <ListGroup>
-          {favesJsx}
-        </ListGroup>
+        {this.injectFavoriteStationsDropdown()}
       </div>
     )
   }
