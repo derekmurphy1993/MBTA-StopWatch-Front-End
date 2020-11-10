@@ -137,7 +137,6 @@ class Favorites extends Component {
   render () {
     if (this.state.stillLoading) {
       return null
-
     }
     return (
       <div className="col-sm-10 col-md-8 mx-auto mt-5">
