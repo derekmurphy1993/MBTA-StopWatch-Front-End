@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Station from '../Station/Station'
+import classes from './Favorites.module.css'
 
 const favorites = (props) => {
 
@@ -21,7 +22,7 @@ const favorites = (props) => {
     }
 
   return (
-    <div>
+    <div className={classes.favorites}>
     <h2> favorite trains! :3  </h2>
     <ul>
     {favStations}
