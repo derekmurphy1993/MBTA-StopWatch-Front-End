@@ -1,0 +1,13 @@
+.favorites {
+  padding: 0;
+  margin: 0;
+  border: 1px red solid;
+  display: flex;
+  content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.favorites li {
+  list-style: none;
+}
