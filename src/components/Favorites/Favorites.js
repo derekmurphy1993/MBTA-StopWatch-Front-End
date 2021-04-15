@@ -6,11 +6,11 @@ import classes from './Favorites.module.css'
 const favorites = (props) => {
 
   let favStations = props.favorites.map(fav => {
-      return <Station name={fav.title}
+      return <li><Station name={fav.title}
         color={fav.color}
         street={fav.at_street}
         predictions={fav.predictions}
-        />
+        /></li>
   })
     // .reduce((arr, el) => {
     //   return arr.concat(el)
